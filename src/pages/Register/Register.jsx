@@ -1,25 +1,100 @@
-import { Link } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
-import 'animate.css';
+import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import "animate.css";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { signOut, updateProfile } from "firebase/auth";
+import auth from "../../firebase/firebase.config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const photo = form.photoURL.value;
+    
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        
+        // Show toast immediately
+        toast.success("Registration successful! Updating profile...", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+
+        // update user profile
+        return updateProfile(user, {
+          displayName: name,
+          photoURL: photo,
+        });
+      })
+      .then(() => {
+        
+
+        // Sign out the user after 5 seconds
+        setTimeout(() => {
+          signOut(auth)
+            .then(() => {
+              console.log("User signed out successfully");
+            })
+            .catch((error) => {
+              console.error("Error signing out:", error);
+            });
+        }, 5000);
+
+        // Redirect to login page after successful registration
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error(err.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4 animate__animated animate__fadeIn">
+      <ToastContainer />
       <div className="w-full max-w-md">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden animate__animated animate__zoomIn">
           {/* Header */}
           <div className="bg-indigo-600 py-6 px-8 text-center">
-            <h1 className="text-3xl font-bold text-white animate__animated animate__fadeInDown">Create Account</h1>
+            <h1 className="text-3xl font-bold text-white animate__animated animate__fadeInDown">
+              Create Account
+            </h1>
             <p className="text-indigo-100 mt-2 animate__animated animate__fadeIn animate__delay-1s">
               Join Road Quest today
             </p>
           </div>
 
           {/* Form */}
-          <form className="p-8">
+          <form onSubmit={handleRegister} className="p-8">
             {/* Name Input */}
             <div className="mb-4 animate__animated animate__fadeIn animate__delay-2s">
-              <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="name"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Full Name
               </label>
               <input
@@ -34,7 +109,10 @@ const Register = () => {
 
             {/* Email Input */}
             <div className="mb-4 animate__animated animate__fadeIn animate__delay-3s">
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -49,7 +127,10 @@ const Register = () => {
 
             {/* Password Input */}
             <div className="mb-4 animate__animated animate__fadeIn animate__delay-4s">
-              <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="password"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Password
               </label>
               <input
@@ -64,7 +145,10 @@ const Register = () => {
 
             {/* Photo URL Input */}
             <div className="mb-6 animate__animated animate__fadeIn animate__delay-5s">
-              <label htmlFor="photoURL" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="photoURL"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Profile Photo URL (Optional)
               </label>
               <input
@@ -103,7 +187,7 @@ const Register = () => {
             {/* Login Link */}
             <div className="mt-6 text-center animate__animated animate__fadeIn animate__delay-9s">
               <p className="text-gray-600">
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <Link
                   to="/login"
                   className="text-indigo-600 font-medium hover:text-indigo-800 transition-colors duration-300"
@@ -113,13 +197,6 @@ const Register = () => {
               </p>
             </div>
           </form>
-        </div>
-
-        {/* Error Message Placeholder */}
-        <div className="mt-4 hidden">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative animate__animated animate__shakeX">
-            <span className="block sm:inline">Please fill in all required fields correctly.</span>
-          </div>
         </div>
       </div>
     </div>
