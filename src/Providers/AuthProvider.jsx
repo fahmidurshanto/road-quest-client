@@ -1,6 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 export const AuthContext = createContext();
 
@@ -18,28 +18,35 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const unsubscribe = () => {
-    const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
-      
-        setUser(currentUser);
-        if (currentUser) {
-          console.log("User logged in:", currentUser);
-        } else {
-          console.log("No user logged in");
-        }
-        
+  const googleLogin = () =>{
+    setLoading(true);
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider);
+  }
+
+  useEffect(()=> {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      console.log("User inside auth state change", currentUser);
+      if (currentUser) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
       setLoading(false);
     });
-    return () => unsubscribe();
-  };
-  unsubscribe();
+    return () => {
+      unsubscribe();
+    };
+  },[])
   const authInfo = {
     createUser,
     user,
     setUser,
     loading,
     setLoading,
-    signIn
+    signIn,
+    googleLogin
   };
 
   return (

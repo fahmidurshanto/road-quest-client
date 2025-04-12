@@ -9,8 +9,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
+  console.log(googleLogin)
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -71,6 +72,10 @@ const Register = () => {
         });
       });
   };
+
+  const handleGoogleSignIn = () => {
+    
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4 animate__animated animate__fadeIn">
