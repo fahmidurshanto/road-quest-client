@@ -3,15 +3,16 @@ import { FcGoogle } from 'react-icons/fc';
 import 'animate.css';
 
 const Login = () => {
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4 animate__animated animate__fadeIn">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden animate__animated animate__zoomIn">
           {/* Header */}
           <div className="bg-indigo-600 py-6 px-8 text-center">
-            <h1 className="text-3xl font-bold text-white animate__animated animate__fadeInDown">Welcome Back</h1>
-            <p className="text-indigo-100 mt-2 animate__animated animate__fadeIn animate__delay-1s">
+            <h1 className="text-3xl font-bold text-white animate__animated animate__fadeInDown cursor-default">
+              Welcome Back
+            </h1>
+            <p className="text-indigo-100 mt-2 animate__animated animate__fadeIn animate__delay-1s cursor-default">
               Sign in to your Road Quest account
             </p>
           </div>
@@ -20,14 +21,14 @@ const Login = () => {
           <div className="p-8">
             {/* Email Input */}
             <div className="mb-6 animate__animated animate__fadeIn animate__delay-2s">
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+              <label htmlFor="email" className="block text-gray-700 font-medium mb-2 cursor-pointer">
                 Email Address
               </label>
               <input
                 type="email"
                 id="email"
                 name="email"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition duration-300"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition duration-300 cursor-text"
                 placeholder="your@email.com"
                 required
               />
@@ -35,14 +36,14 @@ const Login = () => {
 
             {/* Password Input */}
             <div className="mb-6 animate__animated animate__fadeIn animate__delay-3s">
-              <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+              <label htmlFor="password" className="block text-gray-700 font-medium mb-2 cursor-pointer">
                 Password
               </label>
               <input
                 type="password"
                 id="password"
                 name="password"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition duration-300"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition duration-300 cursor-text"
                 placeholder="••••••••"
                 required
               />
@@ -55,15 +56,15 @@ const Login = () => {
                   type="checkbox"
                   id="remember"
                   name="remember"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-pointer"
                 />
-                <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+                <label htmlFor="remember" className="ml-2 block text-sm text-gray-700 cursor-pointer">
                   Remember me
                 </label>
               </div>
               <Link
                 to="/forgot-password"
-                className="text-sm text-indigo-600 hover:text-indigo-800 transition-colors duration-300"
+                className="text-sm text-indigo-600 hover:text-indigo-800 transition-colors duration-300 cursor-pointer"
               >
                 Forgot password?
               </Link>
@@ -72,13 +73,13 @@ const Login = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 animate__animated animate__fadeIn animate__delay-5s"
+              className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 animate__animated animate__fadeIn animate__delay-5s cursor-pointer"
             >
               Sign In
             </button>
 
             {/* Divider */}
-            <div className="flex items-center my-6 animate__animated animate__fadeIn animate__delay-5s">
+            <div className="flex items-center my-6 animate__animated animate__fadeIn animate__delay-5s cursor-default">
               <div className="flex-1 border-t border-gray-300"></div>
               <span className="px-3 text-gray-500">or</span>
               <div className="flex-1 border-t border-gray-300"></div>
@@ -87,19 +88,19 @@ const Login = () => {
             {/* Google Sign In */}
             <button
               type="button"
-              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-gray-200 animate__animated animate__fadeIn animate__delay-6s"
+              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-gray-200 animate__animated animate__fadeIn animate__delay-6s cursor-pointer"
             >
-              <FcGoogle className="text-xl" />
+              <FcGoogle className="text-xl cursor-pointer" />
               Sign in with Google
             </button>
 
             {/* Sign Up Link */}
             <div className="mt-6 text-center animate__animated animate__fadeIn animate__delay-7s">
-              <p className="text-gray-600">
+              <p className="text-gray-600 cursor-default">
                 Don't have an account?{' '}
                 <Link
                   to="/register"
-                  className="text-indigo-600 font-medium hover:text-indigo-800 transition-colors duration-300"
+                  className="text-indigo-600 font-medium hover:text-indigo-800 transition-colors duration-300 cursor-pointer"
                 >
                   Sign up
                 </Link>
@@ -110,7 +111,7 @@ const Login = () => {
 
         {/* Error Message Placeholder - Will be shown when auth fails */}
         <div className="mt-4 hidden">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative animate__animated animate__shakeX">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative animate__animated animate__shakeX cursor-default">
             <span className="block sm:inline">Authentication failed. Please check your credentials.</span>
           </div>
         </div>

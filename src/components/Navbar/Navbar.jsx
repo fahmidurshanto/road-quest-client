@@ -1,13 +1,43 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import 'animate.css';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { AuthContext } from '../../Providers/AuthProvider';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext); // Assuming your AuthContext provides logOut function
+
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        // Optional: Add toast notification or other feedback
+        toast.success("Logged out successfully!", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setIsMobileMenuOpen(false);
+      })
+      .catch(error => {
+        toast.error("Error logging out: " + error.message, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
+  };
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50 animate__animated animate__fadeInDown">
+      <ToastContainer/>
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo and Brand Name */}
@@ -32,12 +62,37 @@ const Navbar = () => {
             >
               Available Cars
             </Link>
-            <Link 
-              to="/login" 
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
-            >
-              Login
-            </Link>
+
+            {/* Conditional rendering for authenticated users */}
+            {user ? (
+              <>
+                <Link 
+                  to="/add-car" 
+                  className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 font-medium"
+                >
+                  Add Car
+                </Link>
+                <Link 
+                  to="/my-cars" 
+                  className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 font-medium"
+                >
+                  My Cars
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link 
+                to="/login" 
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
+              >
+                Login
+              </Link>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -74,13 +129,43 @@ const Navbar = () => {
               >
                 Available Cars
               </Link>
-              <Link 
-                to="/login" 
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Login
-              </Link>
+
+              {/* Conditional rendering for authenticated users (mobile) */}
+              {user ? (
+                <>
+                  <Link 
+                    to="/add-car" 
+                    className="text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium py-2 border-b border-gray-100 hover:pl-2 hover:bg-indigo-50 rounded"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Add Car
+                  </Link>
+                  <Link 
+                    to="/my-cars" 
+                    className="text-gray-700 hover:text-indigo-600 transition-all duration-300 font-medium py-2 border-b border-gray-100 hover:pl-2 hover:bg-indigo-50 rounded"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    My Cars
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link 
+                  to="/login" 
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         </div>
