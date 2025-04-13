@@ -56,7 +56,7 @@ const Navbar = () => {
               Home
             </Link>
             <Link 
-              to="/available-cars" 
+              to="/availableCars" 
               className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 font-medium"
             >
               Available Cars
