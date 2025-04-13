@@ -37,7 +37,6 @@ const Navbar = () => {
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50 animate__animated animate__fadeInDown">
-      <ToastContainer/>
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo and Brand Name */}
@@ -80,7 +79,7 @@ const Navbar = () => {
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
+                  className="bg-indigo-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
                 >
                   Logout
                 </button>
@@ -88,7 +87,7 @@ const Navbar = () => {
             ) : (
               <Link 
                 to="/login" 
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
+                className=" cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300 font-medium"
               >
                 Login
               </Link>
@@ -152,7 +151,7 @@ const Navbar = () => {
                       handleLogout();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
                   >
                     Logout
                   </button>
@@ -160,7 +159,7 @@ const Navbar = () => {
               ) : (
                 <Link 
                   to="/login" 
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
+                  className="bg-indigo-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-indigo-700 transition-all duration-300 font-medium text-center hover:scale-105 transform"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Login
@@ -170,6 +169,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </header>
   );
 };
