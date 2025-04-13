@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext); // Assuming your AuthContext provides logOut function
+  const { user, logout, setLoading } = useContext(AuthContext); // Assuming your AuthContext provides logOut function
 
   const handleLogout = () => {
     logout()
@@ -21,17 +21,16 @@ const Navbar = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        setIsMobileMenuOpen(false);
-      })
+        setLoading(false);})
       .catch(error => {
-        toast.error("Error logging out: " + error.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        const errorMsg = error.message;  
+        const splittedErr = errorMsg
+          .split(/,|FirebaseError:|Firebase:/)
+          .map((part) => part.trim())
+          .filter((part) => part.length > 0);
+        const finalError = splittedErr.join(" "); // Join with spaces instead of commas
+        toast(finalError);
+        setLoading(false);
       });
   };
 

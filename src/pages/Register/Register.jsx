@@ -4,12 +4,11 @@ import "animate.css";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { signOut, updateProfile } from "firebase/auth";
-import auth from "../../firebase/firebase.config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-  const { createUser, googleLogin } = useContext(AuthContext);
+  const { createUser, googleLogin, setLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   console.log(googleLogin);
 
@@ -44,12 +43,27 @@ const Register = () => {
       .then(() => {
         // Sign out the user after 5 seconds
         setTimeout(() => {
-          signOut(auth)
+          signOut()
             .then(() => {
-              console.log("User signed out successfully");
+              setLoading(false);
+              toast.success("User signed out successfully", {
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+              });
             })
             .catch((error) => {
-              console.error("Error signing out:", error);
+                const errorMsg = error.message;  
+                const splittedErr = errorMsg
+                  .split(/,|FirebaseError:|Firebase:/)
+                  .map((part) => part.trim())
+                  .filter((part) => part.length > 0);
+                const finalError = splittedErr.join(" "); // Join with spaces instead of commas
+                toast(finalError);
+                setLoading(false);
             });
         }, 5000);
 
@@ -59,21 +73,20 @@ const Register = () => {
         }, 3000);
       })
       .catch((err) => {
-        console.error(err);
-        toast.error(err.message, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        const errorMsg = err.message;  
+        const splittedErr = errorMsg
+          .split(/,|FirebaseError:|Firebase:/)
+          .map((part) => part.trim())
+          .filter((part) => part.length > 0);
+        const finalError = splittedErr.join(" "); // Join with spaces instead of commas
+        toast(finalError);
+        setLoading(false);
       });
   };
 
   const handleGoogleSignIn = (e) => {
     e.preventDefault();
-    googleLogin(auth)
+    googleLogin()
       .then(res => {
         console.log(res.user);
         const loggedUser = res.user;
@@ -95,15 +108,14 @@ const Register = () => {
         }, 3000);
       })
       .catch(err => {
-        console.error(err);
-        toast.error(err.message, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        const errorMsg = err.message;  
+        const splittedErr = errorMsg
+          .split(/,|FirebaseError:|Firebase:/)
+          .map((part) => part.trim())
+          .filter((part) => part.length > 0);
+        const finalError = splittedErr.join(" "); // Join with spaces instead of commas
+        toast(finalError);
+        setLoading(false);
       });
   };
 
@@ -234,7 +246,6 @@ const Register = () => {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
