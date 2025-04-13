@@ -1,13 +1,21 @@
 import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { 
+  createUserWithEmailAndPassword, 
+  GoogleAuthProvider, 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  signOut 
+} from "firebase/auth";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true); // Start with true to handle initial auth check
+  
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
@@ -18,49 +26,39 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const googleLogin = () =>{
+  const googleLogin = () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider);
-  }
+  };
 
-  const logout = () =>{
+  const logout = () => {
     setLoading(true);
     return signOut(auth);
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("User inside auth state change", currentUser);
-      if (currentUser) {
-        setLoading(true);
-      } else {
-        setLoading(false);
-      }
       setLoading(false);
     });
-    return () => {
-      unsubscribe();
-    };
-  },[])
+    return () => unsubscribe();
+  }, []);
+
   const authInfo = {
     createUser,
     user,
-    setUser,
     loading,
-    setLoading,
     signIn,
     googleLogin,
     logout
   };
 
   return (
-    <div>
-      <AuthContext.Provider value={authInfo}>
-        {children}
-      </AuthContext.Provider>
-    </div>
+    <AuthContext.Provider value={authInfo}>
+      {loading && <LoadingSpinner />}
+      {children}
+    </AuthContext.Provider>
   );
 };
 

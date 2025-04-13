@@ -34,7 +34,7 @@ const Banner = () => {
           </h1>
           <Link to="/availableCars">
           <button
-            className="animate__animated cursor-pointer animate__fadeInUp animate__delay-1s bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full text-lg md:text-xl transition-all duration-300 transform hover:scale-105 shadow-xl"
+            className="animate__animated cursor-pointer animate__fadeInUp animate__delay-1s bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full text-lg md:text-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
           >
             View Available Cars
           </button>
