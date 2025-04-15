@@ -3,12 +3,12 @@ import { FcGoogle } from "react-icons/fc";
 import "animate.css";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { signOut, updateProfile } from "firebase/auth";
-import { toast, ToastContainer } from "react-toastify";
+import {  updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-  const { createUser, googleLogin, setLoading } = useContext(AuthContext);
+  const { createUser, googleLogin, setLoading, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   console.log(googleLogin);
 
@@ -26,7 +26,7 @@ const Register = () => {
         
         // Show toast immediately
         toast.success("Registration successful! Updating profile...", {
-          position: "bottom-right",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -43,11 +43,11 @@ const Register = () => {
       .then(() => {
         // Sign out the user after 5 seconds
         setTimeout(() => {
-          signOut()
+          logout()
             .then(() => {
               setLoading(false);
               toast.success("User signed out successfully", {
-                position: "bottom-right",
+                position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -96,7 +96,7 @@ const Register = () => {
         const user = { name, email, photo };
        
         toast.success("Google sign-in successful!", {
-          position: "bottom-right",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,

@@ -16,13 +16,23 @@ const Login = () => {
     const password = form.password.value;
 
     // Perform login logic here (e.g., API call)
-    console.log("Logging in with:", { email, password });
     signIn(email, password)
-      .then((res) => {
-        res.json();
+      .then((data) => {
+        const loggedUser = data.user;
+        console.log(loggedUser);
+        toast.success(`${loggedUser.displayName} you are logged in successfully`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
         setLoading(false);
       })
-      .then((data) => console.log(data))
       .catch((error) => {
         const errorMsg = error.message;
         const splittedErr = errorMsg
@@ -47,7 +57,7 @@ const Login = () => {
         const user = { name, email, photo };
 
         toast.success("Google sign-in successful!", {
-          position: "bottom-right",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,

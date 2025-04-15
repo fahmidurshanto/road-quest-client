@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import 'animate.css';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { AuthContext } from '../../Providers/AuthProvider';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,7 +14,7 @@ const Navbar = () => {
       .then(() => {
         // Optional: Add toast notification or other feedback
         toast.success("Logged out successfully!", {
-          position: "bottom-right",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -168,7 +168,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </header>
   );
 };
