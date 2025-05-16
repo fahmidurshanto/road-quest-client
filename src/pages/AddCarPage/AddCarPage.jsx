@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "animate.css";
+import axios from "axios";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { toast } from "react-toastify";
 
 const AddCarPage = () => {
+  const {user} = useContext(AuthContext)
   // Form fields will be handled later
   const handleAddCar = (e) => {
     e.preventDefault();
@@ -14,8 +18,9 @@ const AddCarPage = () => {
     const description = form.description.value;
     const imageUrl = form.imageUrl.value;
     const location = form.location.value;
+    const bookingCount = form.bookingCount.value;
     // Form submission logic will be implemented later
-    console.log({
+    const carData = {
       carModel,
         dailyRentalPrice,
         availability,
@@ -23,7 +28,23 @@ const AddCarPage = () => {
         features,
         description,
         imageUrl,
-        location
+        location,
+        bookingCount,
+        user
+  }
+  axios.post("http://localhost:5000/my-cars", {carData})
+  .then((res) =>{
+    console.log(res.data);
+    const data = res.data;
+    data.insertedId && data.acknowledged ? toast.success("Car added successfully") : toast.error("Failed to add car");
+    setTimeout(() =>{
+      form.reset();
+
+    }, 2000)
+  })
+  .catch((err) =>{
+    console.log(err)
+    toast.error(`Something went wrong ${err.message}`)
   })
   };
 
@@ -82,7 +103,7 @@ const AddCarPage = () => {
               {/* Vehicle Registration Number */}
               <div className="animate__animated animate__fadeInRight">
                 <label htmlFor="vehicleRegistrationNumber" className="block text-sm font-medium text-gray-700 mb-1">
-                  Registration Number
+                Vehicle Registration Number
                 </label>
                 <input
                   type="text"
@@ -155,6 +176,14 @@ const AddCarPage = () => {
                   placeholder="e.g. New York, NY"
                 />
               </div>
+
+              {/* Booking Count - Hidden */}
+              <input
+                type="hidden"
+                id="bookingCount"
+                name="bookingCount"
+                value="0"
+              />
             </div>
 
             {/* Submit Button */}
