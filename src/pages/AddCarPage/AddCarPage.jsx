@@ -36,6 +36,7 @@ const AddCarPage = () => {
   axios.post(`http://localhost:5000/my-cars`, {
   carData,
   email: user?.email,
+  availability
 
   })
   .then((res) =>{

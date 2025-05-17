@@ -7,6 +7,7 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AddCarPage from "../pages/AddCarPage/AddCarPage";
 import PrivateRoute from "./PrivateRoute";
 import MyCars from "../pages/MyCars/MyCars";
+import AvailableCars from "../pages/AvailableCars/AvailableCars";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +33,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/my-cars',
-                element: <MyCars></MyCars>
+                element: <PrivateRoute><MyCars></MyCars></PrivateRoute>
+            },
+            {
+                path: "/available-cars",
+                element: <AvailableCars></AvailableCars>
             }
         ]
     }
