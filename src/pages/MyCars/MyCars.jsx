@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import 'animate.css'; // Import animate.css
+import 'animate.css';
 
 const MyCars = () => {
   const [cars, setCars] = useState([]);
@@ -33,9 +33,9 @@ const MyCars = () => {
 
     switch (sortOption) {
       case "newest":
-        return new Date(b.carData.user.createdAt).getTime() - new Date(a.carData.user.createdAt).getTime();
+        return b._id.localeCompare(a._id);
       case "oldest":
-        return new Date(a.carData.user.createdAt).getTime() - new Date(b.carData.user.createdAt).getTime();
+        return a._id.localeCompare(b._id);
       case "price-low":
         return priceA - priceB;
       case "price-high":
@@ -76,35 +76,35 @@ const MyCars = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center h-64 animate__animated animate__fadeIn">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
 
   if (error)
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded animate__animated animate__fadeIn">
-        Error: {error}
-      </div>
-    );
+      Error: {error}
+    </div>
+  );
 
-  if (cars.length === 0 && !loading) // ensure not to show "no cars" during initial load
+  if (cars.length === 0 && !loading)
     return (
       <div className="text-center py-10 animate__animated animate__fadeIn">
-        <h2 className="text-2xl font-bold mb-4">No cars found</h2>
+      <h2 className="text-2xl font-bold mb-4">No cars found</h2>
         <a
           href="/add-car"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Add New Car
-        </a>
-      </div>
-    );
+        Add New Car
+      </a>
+    </div>
+  );
 
   return (
     <div className="container mx-auto p-4 animate__animated animate__fadeIn">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 className="text-xl md:text-2xl font-bold">Manage Your Cars</h1>
-        <select
+        <select 
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
           className="border rounded px-4 py-2 md:px-3 md:py-1 w-full md:w-auto"
@@ -122,7 +122,7 @@ const MyCars = () => {
             <div 
               key={car._id + '-mobile'} 
               className="bg-white shadow-lg rounded-lg p-4 border border-gray-200 hover:shadow-xl transition-shadow duration-200 animate__animated animate__fadeInUp"
-              style={{ animationDelay: `${index * 0.1}s` }} // Staggered animation
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <img
@@ -187,8 +187,8 @@ const MyCars = () => {
 
         <div className="hidden md:block">
           <table className="w-full min-w-[600px]">
-            <thead className="bg-gray-50">
-              <tr>
+          <thead className="bg-gray-50">
+            <tr>
                 <th className="px-2 md:px-4 py-3 text-left text-sm md:text-base">Image</th>
                 <th className="px-2 md:px-4 py-3 text-left text-sm md:text-base">Model</th>
                 <th className="px-2 md:px-4 py-3 text-left text-sm md:text-base">Price/Day</th>
@@ -196,22 +196,22 @@ const MyCars = () => {
                 <th className="px-2 md:px-4 py-3 text-left text-sm md:text-base">Status</th>
                 <th className="px-2 md:px-4 py-3 text-left text-sm md:text-base">Added Date</th>
                 <th className="px-2 md:px-4 py-3 text-left text-sm md:text-base">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
               {sortedCars.map((car, index) => (
                 <tr 
                   key={car._id + '-desktop'} 
                   className="hover:bg-gray-50 animate__animated animate__fadeInUp"
-                  style={{ animationDelay: `${index * 0.05}s` }} // Staggered animation
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <td className="px-2 md:px-4 py-3 align-middle">
-                    <img
-                      src={car.carData.imageUrl}
-                      alt={car.carData.carModel}
+                  <img 
+                    src={car.carData.imageUrl} 
+                    alt={car.carData.carModel}
                       className="w-12 h-8 md:w-16 md:h-10 object-cover rounded"
-                    />
-                  </td>
+                  />
+                </td>
                   <td className="px-2 md:px-4 py-3 font-medium text-sm md:text-base align-middle">
                     {car.carData.carModel}
                   </td>
@@ -229,9 +229,9 @@ const MyCars = () => {
                           : "bg-red-100 text-red-800"
                       }`}
                     >
-                      {car.carData.availability}
-                    </span>
-                  </td>
+                    {car.carData.availability}
+                  </span>
+                </td>
                   <td className="px-2 md:px-4 py-3 text-sm md:text-base align-middle">
                     {new Date(
                       parseInt(car.carData.user.createdAt)
@@ -239,33 +239,33 @@ const MyCars = () => {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
-                    })}
-                  </td>
+                  })}
+                </td>
                   <td className="px-2 md:px-4 py-3 align-middle">
                     <div className="flex flex-col lg:flex-row gap-2">
-                      <button
-                        onClick={() => setEditingCar(car)}
+                  <button
+                    onClick={() => setEditingCar(car)}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm md:text-base w-full lg:w-auto"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => setDeleteConfirm(car._id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => setDeleteConfirm(car._id)}
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm md:text-base w-full lg:w-auto"
-                      >
-                        Delete
-                      </button>
+                  >
+                    Delete
+                  </button>
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         </div>
       </div>
 
       {editingCar && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center p-4 z-[1000] overflow-y-auto animate__animated animate__fadeIn">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center p-4 z-[9999] overflow-y-auto animate__animated animate__fadeIn">
           <div className="bg-white rounded-lg p-6 w-full max-w-xl my-8 relative animate__animated animate__zoomIn animate__faster">
             <button
               onClick={() => setEditingCar(null)}
@@ -276,9 +276,9 @@ const MyCars = () => {
             <h2 className="text-xl font-bold mb-4">Edit Car Details</h2>
             <form
               onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const updatedData = {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const updatedData = {
                   carModel: formData.get("carModel"),
                   dailyRentalPrice: formData.get("dailyRentalPrice"),
                   availability: formData.get("availability"),
@@ -290,8 +290,8 @@ const MyCars = () => {
                   description: formData.get("description"),
                   imageUrl: formData.get("imageUrl"),
                   location: formData.get("location"),
-                };
-                handleUpdate(updatedData);
+              };
+              handleUpdate(updatedData);
               }}
             >
               <div className="space-y-4 mb-6">
@@ -407,7 +407,7 @@ const MyCars = () => {
       )}
 
       {deleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000] animate__animated animate__fadeIn">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] animate__animated animate__fadeIn">
           <div className="bg-white rounded-lg p-6 max-w-md w-full animate__animated animate__zoomIn animate__faster">
             <h3 className="text-lg font-bold mb-4">Confirm Deletion</h3>
             <p className="mb-6">
