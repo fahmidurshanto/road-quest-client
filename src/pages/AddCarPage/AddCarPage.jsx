@@ -30,9 +30,14 @@ const AddCarPage = () => {
         imageUrl,
         location,
         bookingCount,
+        email: user?.email,
         user
   }
-  axios.post("http://localhost:5000/my-cars", {carData})
+  axios.post(`http://localhost:5000/my-cars`, {
+  carData,
+  email: user?.email,
+
+  })
   .then((res) =>{
     console.log(res.data);
     const data = res.data;
