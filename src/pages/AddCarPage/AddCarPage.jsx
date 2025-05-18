@@ -1,14 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "animate.css";
 import axios from "axios";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddCarPage = () => {
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user?.email) {
+      toast.error("Please login to add a car");
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
   // Form fields will be handled later
   const handleAddCar = (e) => {
     e.preventDefault();
+    if (!user?.email) {
+      toast.error("Please login to add a car");
+      return;
+    }
+
     const form = e.target;
     const carModel = form.carModel.value;
     const dailyRentalPrice = form.dailyRentalPrice.value;
@@ -42,7 +57,9 @@ const AddCarPage = () => {
   .then((res) =>{
     console.log(res.data);
     const data = res.data;
-    data.insertedId && data.acknowledged ? toast.success("Car added successfully") : toast.error("Failed to add car");
+    if(data.insertedId && data.acknowledged){
+     return toast.success("Car added successfully")
+    }
     setTimeout(() =>{
       form.reset();
 

@@ -14,28 +14,32 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Start with true to handle initial auth check
-  
+  const [loading, setLoading] = useState(true);
+
+  // Add finally clauses to all auth operations
   const createUser = (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password)
+      .finally(() => setLoading(false));
   };
-
 
   const signIn = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password)
+      .finally(() => setLoading(false));
   };
 
   const googleLogin = () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    return signInWithPopup(auth, provider)
+      .finally(() => setLoading(false));
   };
 
   const logout = () => {
     setLoading(true);
-    return signOut(auth);
+    return signOut(auth)
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -50,16 +54,15 @@ const AuthProvider = ({ children }) => {
     createUser,
     user,
     loading,
-    setLoading,
     signIn,
     googleLogin,
-    logout
+    logout,
+    setLoading,
   };
 
   return (
     <AuthContext.Provider value={authInfo}>
-      {loading && <LoadingSpinner />}
-      {children}
+      {loading ? <LoadingSpinner /> : children}
     </AuthContext.Provider>
   );
 };

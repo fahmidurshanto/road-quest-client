@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const PrivateRoute = ({ children }) => {
-  const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-  const redirectPath = location.state?.from?.pathname || "/";
+  const { user, isLoading } = useContext(AuthContext);
+  const location = useLocation();
 
-  if (user) {
-    // After successful login:
-    navigate(redirectPath, { replace: true, state: { from: redirectPath } ,  });
-    return children;
-  } else {
-    // After unsuccessful login:
-    // navigate("/login", { replace: true });
-    return <Navigate to="/login"></Navigate>
+  if (isLoading) {
+    // Show a loading spinner or skeleton screen while checking auth state
+    return <div>Loading...</div>;
   }
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

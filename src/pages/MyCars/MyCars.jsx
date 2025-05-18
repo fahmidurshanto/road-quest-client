@@ -16,9 +16,11 @@ const MyCars = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!user?.email) return;
+    
     setLoading(true);
     axios
-      .get(`http://localhost:5000/my-cars?email=${user?.email}`)
+      .get(`http://localhost:5000/my-cars?email=${user.email}`)
       .then((response) => {
         setCars(response.data);
         setLoading(false);
