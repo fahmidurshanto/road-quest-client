@@ -14,7 +14,6 @@ const MyBookings = () => {
   const [newDates, setNewDates] = useState({ start: null, end: null });
   const { user } = useContext(AuthContext);
   const email = user?.email;
-  console.log("email from ", email)
 
   useEffect(() => {
     const fetchBookings = () => {
@@ -86,7 +85,8 @@ const MyBookings = () => {
 
   return (
     <div className="animate__animated animate__fadeInUp p-4 md:p-6">
-      <div className="overflow-x-auto rounded-lg border shadow-sm">
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto rounded-lg border shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -100,7 +100,6 @@ const MyBookings = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {bookings.map(booking => (
               <tr key={booking._id} className="hover:bg-gray-50 transition-colors">
-                {/* Car Column */}
                 <td className="px-4 py-3">
                   <div className="flex items-center space-x-4">
                     <img
@@ -123,7 +122,6 @@ const MyBookings = () => {
                   </div>
                 </td>
 
-                {/* Details Column */}
                 <td className="px-4 py-3 text-sm text-gray-900">
                   <div className="space-y-1">
                     <div><span className="font-semibold">Location:</span> {booking.carData.location}</div>
@@ -131,7 +129,6 @@ const MyBookings = () => {
                   </div>
                 </td>
 
-                {/* Dates Column */}
                 <td className="px-4 py-3 text-sm text-gray-900">
                   <div className="space-y-1">
                     <div><span className="font-semibold">From:</span> {formatDate(booking.bookingDate)}</div>
@@ -140,7 +137,6 @@ const MyBookings = () => {
                   </div>
                 </td>
 
-                {/* Price Column */}
                 <td className="px-4 py-3 text-sm text-gray-900">
                   <div className="font-medium">
                     ${booking.totalPrice.toFixed(2)}
@@ -150,7 +146,6 @@ const MyBookings = () => {
                   </div>
                 </td>
 
-                {/* Status Column */}
                 <td className="px-4 py-3">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                     ${booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
@@ -160,7 +155,6 @@ const MyBookings = () => {
                   </span>
                 </td>
 
-                {/* Actions Column */}
                 <td className="px-4 py-3 space-y-2">
                   <button
                     onClick={() => {
@@ -187,22 +181,100 @@ const MyBookings = () => {
         </table>
       </div>
 
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-4">
+        {bookings.map(booking => (
+          <div key={booking._id} className="p-4 border rounded-lg shadow-sm bg-white">
+            <div className="flex items-start space-x-4 mb-4">
+              <img
+                src={booking?.carData?.imageUrl}
+                alt={booking?.carData?.carModel}
+                className="h-16 w-24 rounded-lg object-cover border"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/96';
+                  e.target.className += ' bg-gray-100';
+                }}
+              />
+              <div className="flex-1">
+                <div className="font-medium text-gray-900">
+                  {booking.carData.carModel}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {booking.carData.vehicleRegistrationNumber}
+                </div>
+                <div className="mt-2">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                    ${booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                      booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'}`}>
+                    {booking.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2 text-sm">
+              <div>
+                <span className="font-semibold">Location:</span> {booking.carData.location}
+              </div>
+              <div>
+                <span className="font-semibold">Features:</span> {booking.carData.features.join(', ')}
+              </div>
+              <div>
+                <span className="font-semibold">From:</span> {formatDate(booking.bookingDate)}
+              </div>
+              <div>
+                <span className="font-semibold">To:</span> {formatDate(booking.endDate)}
+              </div>
+              <div>
+                <span className="font-semibold">Duration:</span> {booking.duration} days
+              </div>
+              <div>
+                <span className="font-semibold">Price:</span> ${booking.totalPrice.toFixed(2)}
+                <span className="text-gray-500 text-xs"> (${parseFloat(booking.carData.dailyRentalPrice).toFixed(2)}/day)</span>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-col space-y-2">
+              <button
+                onClick={() => {
+                  setSelectedBooking(booking);
+                  setNewDates({
+                    start: booking.bookingDate,
+                    end: booking.endDate
+                  });
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+              >
+                Modify
+              </button>
+              <button
+                onClick={() => setSelectedBooking(booking)}
+                className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Modals */}
       {selectedBooking && !newDates.start && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-xl">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm mx-4 shadow-xl">
             <h3 className="text-lg font-bold mb-4">Confirm Cancellation</h3>
             <p className="mb-4">Are you sure you want to cancel this booking?</p>
-            <div className="flex justify-end space-x-3">
+            <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
               <button
                 onClick={() => setSelectedBooking(null)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg text-sm"
               >
                 Go Back
               </button>
               <button
                 onClick={handleCancel}
-                className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg"
+                className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg text-sm"
               >
                 Confirm Cancel
               </button>
@@ -213,7 +285,7 @@ const MyBookings = () => {
 
       {selectedBooking && newDates.start && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
             <h3 className="text-lg font-bold mb-4">Modify Booking Dates</h3>
             <div className="space-y-4">
               <div>
@@ -224,7 +296,7 @@ const MyBookings = () => {
                   minDate={new Date()}
                   showTimeSelect
                   dateFormat="dd MMM yyyy h:mm aa"
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md text-sm"
                 />
               </div>
               <div>
@@ -235,23 +307,23 @@ const MyBookings = () => {
                   minDate={newDates.start}
                   showTimeSelect
                   dateFormat="dd MMM yyyy h:mm aa"
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md text-sm"
                 />
               </div>
             </div>
-            <div className="mt-6 flex justify-end space-x-3">
+            <div className="mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
               <button
                 onClick={() => {
                   setSelectedBooking(null);
                   setNewDates({ start: null, end: null });
                 }}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDateChange}
-                className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg"
+                className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg text-sm"
               >
                 Save Changes
               </button>
