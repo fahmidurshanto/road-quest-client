@@ -48,7 +48,7 @@ const AddCarPage = () => {
         email: user?.email,
         user
   }
-  axios.post(`http://localhost:5000/my-cars`, {
+  axios.post(`https://road-quest-server.onrender.com/my-cars`, {
   carData,
   email: user?.email,
   availability

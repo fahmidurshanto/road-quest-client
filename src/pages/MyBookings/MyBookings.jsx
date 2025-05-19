@@ -17,7 +17,7 @@ const MyBookings = () => {
 
   useEffect(() => {
     const fetchBookings = () => {
-      axios.get(`http://localhost:5000/my-bookings?email=${email}`)
+      axios.get(`https://road-quest-server.onrender.com/my-bookings?email=${email}`)
         .then(response => {
           const processed = response.data.map(booking => ({
             ...booking,
@@ -43,7 +43,7 @@ const MyBookings = () => {
   }, [email]);
 
   const handleCancel = () => {
-    axios.patch(`http://localhost:5000/bookings/${selectedBooking?._id}`, { status: 'canceled' })
+    axios.patch(`https://road-quest-server.onrender.com/bookings/${selectedBooking?._id}`, { status: 'canceled' })
       .then(() => {
         setBookings(bookings.map(b => 
           b._id === selectedBooking?._id ? {...b, status: 'canceled'} : b
@@ -58,7 +58,7 @@ const MyBookings = () => {
     const days = differenceInDays(newDates.end, newDates.start) + 1;
     const totalPrice = days * dailyPrice;
 
-    axios.patch(`http://localhost:5000/bookings/${selectedBooking?._id}`, {
+    axios.patch(`https://road-quest-server.onrender.com/bookings/${selectedBooking?._id}`, {
       bookingDate: newDates.start,
       endDate: newDates.end,
       totalPrice

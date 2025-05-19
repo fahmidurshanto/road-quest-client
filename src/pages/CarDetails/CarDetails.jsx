@@ -17,7 +17,7 @@ const CarDetails = () => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/available-cars/${id}`)
+    axios.get(`https://road-quest-server.onrender.com/available-cars/${id}`)
       .then(response => {
         setCar(response.data);
         setIsLoading(false);
@@ -29,7 +29,7 @@ const CarDetails = () => {
   }, [id]);
 
   const handleBookNow = () => {
-    axios.post("http://localhost:5000/my-bookings", {
+    axios.post("https://road-quest-server.onrender.com/my-bookings", {
       carData,
       email: user?.email,
     })

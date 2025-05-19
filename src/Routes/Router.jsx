@@ -44,7 +44,7 @@ const router = createBrowserRouter([
             {
                 path: "/car/:id",
                 element: <PrivateRoute><CarDetails></CarDetails></PrivateRoute>,
-                loader: ({params}) => fetch(`http://localhost:5000/car/${params.id}`)
+                loader: ({params}) => fetch(`https://road-quest-server.onrender.com/car/${params.id}`)
             },
             {
                 path: "/my-bookings",

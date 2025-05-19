@@ -8,7 +8,7 @@ const RecentListings = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/cars")
+    axios.get("https://road-quest-server.onrender.com/cars")
       .then(response => {
         const sortedCars = response?.data
           ?.sort((a, b) => parseInt(b?.user?.createdAt || 0) - parseInt(a?.user?.createdAt || 0))

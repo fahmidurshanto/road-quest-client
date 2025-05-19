@@ -11,7 +11,7 @@ const AvailableCars = () => {
   const [sortOrder, setSortOrder] = useState('desc');
 
   useEffect(() =>{
-    axios.get("http://localhost:5000/available-cars")
+    axios.get("https://road-quest-server.onrender.com/available-cars")
     .then(res => {
       setCars(res.data);
     })
