@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'animate.css';
 import { AuthContext } from '../../Providers/AuthProvider';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -41,6 +42,27 @@ const MyBookings = () => {
 
     email && fetchBookings();
   }, [email]);
+
+  const getChartData = () => {
+    const carPriceMap = new Map();
+    
+    bookings.forEach(booking => {
+      const carModel = booking.carData.carModel;
+      const dailyPrice = parseFloat(booking.carData.dailyRentalPrice);
+      
+      if (!carPriceMap.has(carModel)) {
+        carPriceMap.set(carModel, {
+          carModel,
+          dailyPrice,
+          count: 1
+        });
+      }
+    });
+
+    return Array.from(carPriceMap.values());
+  };
+
+  const chartData = getChartData();
 
   const handleCancel = () => {
     axios.patch(`https://road-quest-server.onrender.com/bookings/${selectedBooking?._id}`, { status: 'canceled' })
@@ -85,6 +107,35 @@ const MyBookings = () => {
 
   return (
     <div className="animate__animated animate__fadeInUp p-4 md:p-6">
+      {/* Price Chart Section */}
+      <div className="mb-8 bg-white p-4 rounded-lg border shadow-sm">
+        <h2 className="text-xl font-bold mb-4">Car Daily Rental Prices</h2>
+        <div className="h-64 md:h-96">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="carModel" 
+                angle={-45} 
+                textAnchor="end"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar 
+                dataKey="dailyPrice" 
+                name="Daily Price ($)"
+                fill="#2563eb" 
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto rounded-lg border shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
