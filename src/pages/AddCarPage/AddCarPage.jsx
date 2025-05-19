@@ -57,9 +57,7 @@ const AddCarPage = () => {
   .then((res) =>{
     console.log(res.data);
     const data = res.data;
-    if(data.insertedId && data.acknowledged){
-     return toast.success("Car added successfully")
-    }
+    toast.success("Car added successfully")
     setTimeout(() =>{
       form.reset();
 

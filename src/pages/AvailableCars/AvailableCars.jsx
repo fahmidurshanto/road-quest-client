@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import 'animate.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const AvailableCars = () => {
   const [viewMode, setViewMode] = useState('grid');
@@ -102,8 +103,9 @@ const AvailableCars = () => {
       {/* Cars Display */}
       <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'space-y-4'} gap-4`}>
         {sortedCars.map((car, index) => (
-          <div
-            key={car._id}
+         <Link className='cursor-pointer' to={`/car/${car._id}`} key={car._id}>
+           <div
+            
             className={`animate__animated animate__fadeInUp bg-white rounded-xl shadow-md overflow-hidden ${
               viewMode === 'list' ? 'flex' : ''
             }`}
@@ -143,6 +145,7 @@ const AvailableCars = () => {
               </button>
             </div>
           </div>
+         </Link>
         ))}
       </div>
     </div>
