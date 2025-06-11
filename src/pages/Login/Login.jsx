@@ -4,6 +4,7 @@ import "animate.css";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
   const { signIn, googleLogin, setLoading } = useContext(AuthContext);
@@ -19,7 +20,6 @@ const Login = () => {
     signIn(email, password)
       .then((data) => {
         const loggedUser = data.user;
-        console.log(loggedUser);
         toast.success(`${loggedUser.displayName} you are logged in successfully`, {
           position: "top-right",
           autoClose: 3000,
@@ -28,6 +28,17 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
         });
+        const user = {email: email};
+        axios.post("http://localhost:5000/jwt",user, { withCredentials: true })
+        .then(result => {
+          console.log(result.data);
+        } )
+        .catch(error =>{
+          console.log(error);
+        })
+
+
+        .then("")
         setTimeout(() => {
           navigate("/");
         }, 3000);

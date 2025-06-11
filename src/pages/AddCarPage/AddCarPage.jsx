@@ -48,11 +48,11 @@ const AddCarPage = () => {
         email: user?.email,
         user
   }
-  axios.post(`https://road-quest-server.onrender.com/my-cars`, {
+  axios.post(`http://localhost:5000/my-cars`, {
   carData,
   email: user?.email,
-  availability
-
+  availability,
+    withCredentials: true
   })
   .then((res) =>{
     console.log(res.data);

@@ -20,7 +20,9 @@ const MyCars = () => {
     
     setLoading(true);
     axios
-      .get(`https://road-quest-server.onrender.com/my-cars?email=${user.email}`)
+      .get(`http://localhost:5000/my-cars?email=${user.email}`,{
+        withCredentials: true
+      })
       .then((response) => {
         setCars(response.data);
         setLoading(false);
@@ -52,7 +54,7 @@ const MyCars = () => {
 
   const handleUpdate = (updatedData) => {
     axios
-      .put(`https://road-quest-server.onrender.com/my-cars/${editingCar._id}`, updatedData)
+      .put(`http://localhost:5000/my-cars/${editingCar._id}`, updatedData)
       .then(() => {
         setCars(
           cars.map((car) =>
@@ -69,7 +71,7 @@ const MyCars = () => {
 
   const handleDelete = () => {
     axios
-      .delete(`https://road-quest-server.onrender.com/my-cars/${deleteConfirm}`)
+      .delete(`http://localhost:5000/my-cars/${deleteConfirm}`)
       .then(() => {
         setCars(cars.filter((car) => car._id !== deleteConfirm));
         setDeleteConfirm(null);

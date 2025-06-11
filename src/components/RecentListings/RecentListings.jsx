@@ -8,7 +8,7 @@ const RecentListings = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("https://road-quest-server.onrender.com/cars")
+    axios.get("http://localhost:5000/cars")
       .then(response => {
         const sortedCars = response?.data
           ?.sort((a, b) => parseInt(b?.user?.createdAt || 0) - parseInt(a?.user?.createdAt || 0))
@@ -52,12 +52,12 @@ const RecentListings = () => {
             >
               <div className="relative h-56 overflow-hidden">
                 <img 
-                  src={car?.carData?.imageUrl || "https://via.placeholder.com/400x300"}
+                  src={car?.carData?.imageUrl}
                   alt={car?.carData?.carModel}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full text-sm font-medium shadow-sm">
-                  {car?.carData?.bookingCount || 0} bookings
+                  {car?.carData?.bookingCount} bookings
                 </div>
               </div>
 
@@ -65,7 +65,7 @@ const RecentListings = () => {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-xl font-bold text-gray-900 mb-1">
-                      {car?.carData?.carModel || "New Listing"}
+                     {car?.carData?.carModel} 
                     </h3>
                     <p className="text-gray-500 text-sm">
                       {car?.carData?.location || "Location not specified"}
